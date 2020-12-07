@@ -3,30 +3,34 @@
 
 #include <set>
 #include <string>
+#include <boost/filesystem.hpp>
 
 namespace walker {
 
-class IObserver;
+class ISubcriber;
 
 struct Settings {
 	explicit Settings(bool isRecursive = false,
-					  const std::set<std::string>& extensions = {})
-		: isRecursive_(false)
-		, extensions_(extensions){}
+					  const std::set<std::string>& extensions = {},
+					  const std::set<std::string>& skipped_dirs = {})
+		: is_recursive_(false)
+		, extensions_(extensions)
+		, skipped_dirs_(skipped_dirs){}
 	~Settings() = default;
 
-	bool isRecursive_;
+	bool is_recursive_;
 	std::set<std::string> extensions_;
+	std::set<std::string> skipped_dirs_;
 };
 
-class ISubject {
+class IPublisher {
 public:
-	ISubject() = default;
-	virtual ~ISubject() = default;
+	IPublisher() = default;
+	virtual ~IPublisher() = default;
 
-	virtual void Notify() = 0;
-	virtual void Subscribe(IObserver* observer) = 0;
-	virtual void Unsubscribe(IObserver* observer) = 0;
+	virtual void Subscribe(ISubcriber* observer) = 0;
+	virtual void Unsubscribe(ISubcriber* observer) = 0;
+	virtual void Notify(const std::string& file_path) = 0;
 };
 
 class IWalker {
@@ -35,7 +39,7 @@ public:
 		: settings_(settings){}
 	virtual ~IWalker() = default;
 
-	virtual bool Walk(const std::string& dirPath) = 0;
+	virtual bool Walk(const std::string& dir_path) = 0;
 
 	virtual void SetSettings(const Settings& settings) {
 		settings_ = settings;

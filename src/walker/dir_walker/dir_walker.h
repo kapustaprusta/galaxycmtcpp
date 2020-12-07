@@ -1,32 +1,35 @@
 #ifndef DIR_WALKER_H
 #define DIR_WALKER_H
 
+#include <iostream>
+
 #include <queue>
 #include <mutex>
 #include <string>
+#include <boost/lockfree/spsc_queue.hpp>
 
 #include "../walker.h"
 
 namespace walker {
 
-class DirWalker : public IWalker,
-                  public ISubject {
+typedef boost::lockfree::spsc_queue<std::string, boost::lockfree::fixed_sized<true>> string_queue;
+
+class DirWalker final : public IWalker,
+                        public IPublisher {
 public:
-	explicit DirWalker(const Settings& settings);
-	~DirWalker() = default;
+	explicit DirWalker(const Settings& settings = Settings{});
+	~DirWalker() final = default;
 
-	void Notify() override;
-	void Subscribe(IObserver* observer) override;
-	void Unsubscribe(IObserver* observer) override;
+	bool Walk(const std::string& dir_path) override;
 
-	bool Walk(const std::string& dirPath) override;
+	void Subscribe(ISubcriber* observer) override;
+	void Unsubscribe(ISubcriber* observer) override;
+	void Notify(const std::string& file_path) override;
 
 private:
-	std::mutex filePathsMutex_;
+	ISubcriber* observer_;
 
-	std::set<IObserver*> observers_;
-
-	std::queue<std::string> filePaths_;
+	std::mutex observer_mutex_;
 };
 
 } // namespace walker

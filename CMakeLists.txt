@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 project(galaxycmt)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(dep/cppast)
 
@@ -11,7 +11,7 @@ include_directories(${Boost_INCLUDE_DIR})
 add_executable(galaxycmt main.cpp
                          src/walker/walker.h
                          src/walker/dir_walker/dir_walker.h
-                         src/walker/dir_walker/dir_walker.cpp)
+                         src/walker/dir_walker/dir_walker.cpp src/manager/manager.h src/threadpool/threadpool.h src/threadpool/threadpool.cpp)
 
 target_link_libraries(galaxycmt PUBLIC cppast
                                 PUBLIC ${Boost_LIBRARIES})
