@@ -1,14 +1,10 @@
 #include <iostream>
 
-#include "src/walker/dir_walker/dir_walker.h"
+#include "src/parser/ast_parser/ast_parser.h"
 
-int main() {
-	walker::Settings seetings;
-	seetings.is_recursive_ = true;
-	seetings.extensions_ = {".h", ".cpp"};
+int main()
+{
+	galaxycmt::ASTParser parser;
 
-	walker::DirWalker walker(seetings);
-	walker.Walk("/home/vniksihov/src/initial_setup");
-
-    return 0;
+	return 0;
 }
