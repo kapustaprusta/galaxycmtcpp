@@ -8,10 +8,13 @@ find_package(Boost 1.65 COMPONENTS filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 set (HEADERS src/parser/parser.h
-             src/parser/ast_parser/ast_parser.h)
+             src/walker/walker.h
+             src/parser/ast_parser/ast_parser.h
+             src/walker/dir_walker/dir_walker.h)
 
 set (SOURCES main.cpp
-             src/parser/ast_parser/ast_parser.cpp)
+             src/parser/ast_parser/ast_parser.cpp
+             src/walker/dir_walker/dir_walker.cpp)
 
 add_executable(galaxycmt ${HEADERS}
                          ${SOURCES})
