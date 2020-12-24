@@ -6,17 +6,16 @@
 
 #include "../walker.h"
 
-namespace galaxycmt
-{
+namespace galaxycmt {
 
-class DirWalker : public IWalker
-{
+class DirWalker : public IWalker {
 public:
 	explicit DirWalker(const WalkerConfig& config = WalkerConfig());
 	virtual ~DirWalker() = default;
 
 	void Walk(const std::string& pathToDir) override;
 
+	size_t GetVisitedLength() override;
 	std::list<std::string> GetVisited() override;
 
 private:

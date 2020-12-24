@@ -4,23 +4,33 @@
 #include <string>
 #include <memory>
 
-namespace galaxycmt
-{
+namespace galaxycmt {
 
 class IWalker;
 
-class IParser
-{
+enum class NodeType {
+	UNKNOWN   = 0,
+	FILE      = 1,
+	DIRECTORY = 2
+};
+
+struct Node {
+	Node(const NodeType& type = NodeType::UNKNOWN,
+	     const std::string& path = "")
+		: type_(type)
+		, path_(path){}
+	~Node() = default;
+
+	NodeType type_;
+	std::string path_;
+};
+
+class IParser {
 public:
-	IParser(const std::shared_ptr<IWalker>& walker = nullptr)
-		: walker_(walker){}
+	IParser() = default;
 	~IParser() = default;
 
-	virtual bool Parse() = 0;
-	virtual bool Parse(const std::string& pathToFile) = 0;
-
-protected:
-	std::shared_ptr<IWalker> walker_;
+	virtual void Parse(const Node& node) = 0;
 };
 
 } // galaxycmt

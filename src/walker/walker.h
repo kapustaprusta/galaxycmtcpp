@@ -6,18 +6,14 @@
 #include <string>
 #include <boost/filesystem.hpp>
 
-namespace galaxycmt
-{
+namespace galaxycmt {
 
-struct WalkerConfig
-{
+struct WalkerConfig {
 	WalkerConfig(bool isRecursive = false,
 			     const std::set<std::string>& skippedPaths = {},
 			     const std::string& pathToRootDir = "./")
-		: isRecursive_(isRecursive)
-	{
-		for (const auto& skippedPath : skippedPaths)
-		{
+		: isRecursive_(isRecursive) {
+		for (const auto& skippedPath : skippedPaths) {
 			// convert relative path to absolute
 			skippedPaths_.insert(boost::filesystem::absolute(skippedPath,
 													         pathToRootDir).string());
@@ -28,8 +24,7 @@ struct WalkerConfig
 	std::set<std::string> skippedPaths_;
 };
 
-class IWalker
-{
+class IWalker {
 public:
 	explicit IWalker(const WalkerConfig& config)
 		: config_(config){}
@@ -37,6 +32,7 @@ public:
 
 	virtual void Walk(const std::string& pathToDir) = 0;
 
+	virtual size_t GetVisitedLength() = 0;
 	virtual std::list<std::string> GetVisited() = 0;
 
 protected:
