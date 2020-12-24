@@ -1,6 +1,9 @@
 #ifndef GALAXYCMT_DIR_WALKER_H
 #define GALAXYCMT_DIR_WALKER_H
 
+#include <queue>
+#include <mutex>
+
 #include "../walker.h"
 
 namespace galaxycmt
@@ -9,12 +12,19 @@ namespace galaxycmt
 class DirWalker : public IWalker
 {
 public:
-	explicit DirWalker(const WalkerConfig& config)
-		: IWalker(config){}
+	explicit DirWalker(const WalkerConfig& config = WalkerConfig());
 	virtual ~DirWalker() = default;
 
-	bool Walk() override;
-	bool Walk(const std::string& pathToDir) override;
+	void Walk(const std::string& pathToDir) override;
+
+	std::list<std::string> GetVisited() override;
+
+private:
+	std::mutex visitedFilesMutex_;
+
+	std::queue<std::string> dirsToVisit_;
+
+	std::list<std::string> visitedFiles_;
 };
 
 } // galaxycmt

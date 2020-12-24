@@ -2,16 +2,30 @@
 #define GALAXYCMT_WALKER_H
 
 #include <set>
+#include <queue>
 #include <string>
+#include <boost/filesystem.hpp>
 
 namespace galaxycmt
 {
 
 struct WalkerConfig
 {
-	bool isRecursive{false};
-	std::string pathToDir{"./"};
-	std::set<std::string> extensions{"h", "hpp", "cpp"};
+	WalkerConfig(bool isRecursive = false,
+			     const std::set<std::string>& skippedPaths = {},
+			     const std::string& pathToRootDir = "./")
+		: isRecursive_(isRecursive)
+	{
+		for (const auto& skippedPath : skippedPaths)
+		{
+			// convert relative path to absolute
+			skippedPaths_.insert(boost::filesystem::absolute(skippedPath,
+													         pathToRootDir).string());
+		}
+	}
+
+	bool isRecursive_;
+	std::set<std::string> skippedPaths_;
 };
 
 class IWalker
@@ -21,8 +35,9 @@ public:
 		: config_(config){}
 	~IWalker() = default;
 
-	virtual bool Walk() = 0;
-	virtual bool Walk(const std::string& pathToDir) = 0;
+	virtual void Walk(const std::string& pathToDir) = 0;
+
+	virtual std::list<std::string> GetVisited() = 0;
 
 protected:
 	WalkerConfig config_;

@@ -19,4 +19,5 @@ set (SOURCES main.cpp
 add_executable(galaxycmt ${HEADERS}
                          ${SOURCES})
 
-target_link_libraries(galaxycmt PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(galaxycmt PUBLIC ${Boost_LIBRARIES}
+                                PUBLIC pthread)
