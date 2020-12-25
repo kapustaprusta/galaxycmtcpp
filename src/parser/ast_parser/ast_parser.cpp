@@ -1,9 +1,10 @@
 #include <atomic>
 #include <future>
-#include <boost/interprocess/file_mapping.hpp>
-#include <boost/interprocess/mapped_region.hpp>
+#include <fstream>
 
+//
 #include <iostream>
+//
 
 #include "ast_parser.h"
 #include "../../walker/walker.h"
@@ -33,20 +34,17 @@ void ASTParser::ParseFile(const std::string& pathToFile) {
 
 	if (filesExtensions_.count(parsedFileExtension))
 	{
-		boost::interprocess::file_mapping fileMapping;
-		boost::interprocess::mapped_region mappedRegion;
-
-		try {
-			fileMapping = boost::interprocess::
-								file_mapping(pathToFile.c_str(), boost::interprocess::read_only);
-			mappedRegion = boost::interprocess::
-								mapped_region(fileMapping, boost::interprocess::read_only, 0, 0);
-		}
-		catch (std::exception& e) {
-			throw std::runtime_error(e.what());
+		std::fstream parsedFile(pathToFile, std::fstream::in);
+		if (!parsedFile.is_open())
+		{
+			// TODO: change on log
+			std::cout << "cannot open file: " + pathToFile + "\n";
+			return;
 		}
 
-		auto fileData = static_cast<char*>(mappedRegion.get_address());
+		std::string strLine;
+		std::getline(parsedFile, strLine);
+		std::cout << strLine << "\n";
 	}
 }
 

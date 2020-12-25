@@ -20,9 +20,7 @@ public:
 
 private:
 	std::mutex visitedFilesMutex_;
-
 	std::queue<std::string> dirsToVisit_;
-
 	std::list<std::string> visitedFiles_;
 };
 

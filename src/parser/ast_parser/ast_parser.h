@@ -20,7 +20,6 @@ private:
 	void ParseFile(const std::string& pathToFile);
 
 	std::shared_ptr<IWalker> walker_;
-
 	std::set<std::string> filesExtensions_;
 };
 

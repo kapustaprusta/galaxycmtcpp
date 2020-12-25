@@ -4,20 +4,25 @@ project(galaxycmt)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(Boost 1.65 COMPONENTS filesystem REQUIRED)
+find_package(Boost 1.65 COMPONENTS log        REQUIRED
+                                   filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
-set (HEADERS src/parser/parser.h
+set (HEADERS src/utils/logger.h
+             src/parser/parser.h
              src/walker/walker.h
              src/parser/ast_parser/ast_parser.h
              src/walker/dir_walker/dir_walker.h)
 
 set (SOURCES main.cpp
+             src/utils/logger.cpp
              src/parser/ast_parser/ast_parser.cpp
              src/walker/dir_walker/dir_walker.cpp)
 
 add_executable(galaxycmt ${HEADERS}
                          ${SOURCES})
 
-target_link_libraries(galaxycmt PUBLIC ${Boost_LIBRARIES}
-                                PUBLIC pthread)
+add_definitions(-DBOOST_LOG_DYN_LINK)
+
+target_link_libraries(galaxycmt PUBLIC pthread
+                                PUBLIC ${Boost_LIBRARIES})
