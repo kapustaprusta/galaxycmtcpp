@@ -4,12 +4,14 @@
 #include <list>
 #include <mutex>
 #include <memory>
+#include <boost/log/sources/logger.hpp>
+#include <boost/log/sources/record_ostream.hpp>
 
 namespace galaxycmt {
 
 class Logger;
 
-typedef boost::log::sinks::sink sink;
+namespace src = boost::log::sources;
 
 enum class SeverityLevel {
 	TRACE   = 0,
@@ -44,16 +46,21 @@ public:
 	static Logger* GetInstance();
 
 	void AddSink(const LoggerSinkType& sinkType,
-			     const std::string& pathToLogFile = "");
+			     const std::string& pathToFile = "");
 
-	void Print(const std::string& message,
-			   const SeverityLevel& level);
+	void AddMessage(const std::string& message,
+	                const SeverityLevel& level = SeverityLevel::INFO);
 
 private:
 	friend LoggerDestroyer;
 
 	Logger() = default;
 	~Logger() = default;
+
+	void AddConsoleSink();
+	void AddFileSink(const std::string& pathToFile);
+
+	src::logger coreLogger_;
 
 	static Logger* logger_;
 	static std::mutex loggerMutex_;

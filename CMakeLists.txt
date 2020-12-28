@@ -8,14 +8,14 @@ find_package(Boost 1.65 COMPONENTS log        REQUIRED
                                    filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
-set (HEADERS src/utils/logger.h
-             src/parser/parser.h
+set (HEADERS src/parser/parser.h
              src/walker/walker.h
+             src/utils/logger/logger.h
              src/parser/ast_parser/ast_parser.h
              src/walker/dir_walker/dir_walker.h)
 
 set (SOURCES main.cpp
-             src/utils/logger.cpp
+             src/utils/logger/logger.cpp
              src/parser/ast_parser/ast_parser.cpp
              src/walker/dir_walker/dir_walker.cpp)
 

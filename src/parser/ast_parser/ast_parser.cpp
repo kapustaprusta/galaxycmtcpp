@@ -2,10 +2,6 @@
 #include <future>
 #include <fstream>
 
-//
-#include <iostream>
-//
-
 #include "ast_parser.h"
 #include "../../walker/walker.h"
 
@@ -18,6 +14,9 @@ ASTParser::ASTParser(const std::shared_ptr<IWalker>& walker)
 	filesExtensions_ = {".h",
 					    ".hpp",
 					    ".cpp"};
+
+	logger_ = Logger::GetInstance();
+	logger_->AddSink(LoggerSinkType::CONSOLE);
 }
 
 void ASTParser::Parse(const Node& node) {
@@ -37,14 +36,11 @@ void ASTParser::ParseFile(const std::string& pathToFile) {
 		std::fstream parsedFile(pathToFile, std::fstream::in);
 		if (!parsedFile.is_open())
 		{
-			// TODO: change on log
-			std::cout << "cannot open file: " + pathToFile + "\n";
+			logger_->AddMessage("cannot open file: " + pathToFile + "\n");
 			return;
 		}
 
-		std::string strLine;
-		std::getline(parsedFile, strLine);
-		std::cout << strLine << "\n";
+		// Parse
 	}
 }
 

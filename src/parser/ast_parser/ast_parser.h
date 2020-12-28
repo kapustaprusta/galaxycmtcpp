@@ -5,6 +5,7 @@
 #include <string>
 
 #include "../parser.h"
+#include "../../utils/logger/logger.h"
 
 namespace galaxycmt {
 
@@ -19,6 +20,7 @@ private:
 	void ParseDir(const std::string& pathToDir);
 	void ParseFile(const std::string& pathToFile);
 
+	Logger* logger_;
 	std::shared_ptr<IWalker> walker_;
 	std::set<std::string> filesExtensions_;
 };
