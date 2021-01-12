@@ -57,22 +57,22 @@ void Logger::AddMessage(const std::string& message, const SeverityLevel& level)
 	switch (level)
 	{
 		case SeverityLevel::TRACE:
-			BOOST_LOG(coreLogger_) << message << "\n";
+			BOOST_LOG(coreLogger_) << message;
 			break;
 		case SeverityLevel::DEBUG:
-			BOOST_LOG(coreLogger_) << message << "\n";
+			BOOST_LOG(coreLogger_) << message;
 			break;
 		case SeverityLevel::INFO:
-			BOOST_LOG(coreLogger_) << message << "\n";
+			BOOST_LOG(coreLogger_) << message;
 			break;
 		case SeverityLevel::WARNING:
-			BOOST_LOG(coreLogger_) << message << "\n";
+			BOOST_LOG(coreLogger_) << message;
 			break;
 		case SeverityLevel::ERROR:
-			BOOST_LOG(coreLogger_) << message << "\n";
+			BOOST_LOG(coreLogger_) << message;
 			break;
 		case SeverityLevel::FATAL:
-			BOOST_LOG(coreLogger_) << message << "\n";
+			BOOST_LOG(coreLogger_) << message;
 			break;
 	}
 }

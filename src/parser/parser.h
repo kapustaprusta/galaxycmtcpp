@@ -14,11 +14,11 @@ enum class FSNodeType {
 	DIRECTORY = 2
 };
 
-struct Node {
-	Node(const FSNodeType& type = FSNodeType::UNKNOWN, const std::string& path = "")
+struct FSNode {
+	FSNode(const FSNodeType& type = FSNodeType::UNKNOWN, const std::string& path = "")
 		: type_(type)
 		, path_(path){}
-	~Node() = default;
+	~FSNode() = default;
 
 	FSNodeType type_;
 	std::string path_;
@@ -29,7 +29,7 @@ public:
 	IParser() = default;
 	~IParser() = default;
 
-	virtual void Parse(const Node& node) = 0;
+	virtual void Parse(const FSNode& node) = 0;
 };
 
 } // galaxycmt

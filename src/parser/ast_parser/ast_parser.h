@@ -7,10 +7,6 @@
 #include "../parser.h"
 #include "../../utils/logger/logger.h"
 
-std::set<std::string> abc = {
-		"asd",
-};
-
 namespace galaxycmt {
 
 class ASTParser : public IParser {
@@ -18,13 +14,14 @@ public:
 	explicit ASTParser(const std::shared_ptr<IWalker>& walker = nullptr);
 	virtual ~ASTParser() = default;
 
-	void Parse(const Node& node) override;
+	void Parse(const FSNode& node) override;
 
 private:
 	void ParseDir(const std::string& pathToDir);
 	void ParseFile(const std::string& pathToFile);
 
 	bool IsVariable(const std::string& textLine);
+	std::string ReadTextBlock(std::ifstream& fileStream);
 
 	Logger* logger_;
 	std::set<std::string> keyWords_;

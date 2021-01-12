@@ -1,6 +1,6 @@
 #include <atomic>
 #include <future>
-#include <fstream>
+#include <iostream>
 #include <boost/algorithm/string.hpp>
 
 #include "ast_parser.h"
@@ -27,7 +27,7 @@ ASTParser::ASTParser(const std::shared_ptr<IWalker>& walker)
 					    ".cpp"};
 }
 
-void ASTParser::Parse(const Node& node) {
+void ASTParser::Parse(const FSNode& node) {
 	if (node.type_ == FSNodeType::FILE) {
 		ParseFile(node.path_);
 		return;
@@ -39,14 +39,20 @@ void ASTParser::Parse(const Node& node) {
 void ASTParser::ParseFile(const std::string& pathToFile) {
 	std::string parsedFileExtension = pathToFile.substr(pathToFile.find_last_of('.'));
 	if (filesExtensions_.count(parsedFileExtension)) {
-		std::fstream parsedFile(pathToFile, std::fstream::in);
-		if (!parsedFile.is_open()) {
+		std::ifstream parsedFileStream(pathToFile);
+		if (!parsedFileStream.is_open()) {
 			logger_->AddMessage("cannot open file: " + pathToFile + "\n");
 			return;
 		}
 
 		// Parse
-
+		while (!parsedFileStream.eof()) {
+			auto textBlock = ReadTextBlock(parsedFileStream);
+			if (textBlock != "\n") {
+//				logger_->AddMessage(textBlock);
+				std::cout << textBlock << "\n";
+			}
+		}
 	}
 }
 
@@ -100,6 +106,42 @@ bool ASTParser::IsVariable(const std::string& textLine) {
 
 		return true;
 	});
+}
+
+std::string ASTParser::ReadTextBlock(std::ifstream& fileStream) {
+	std::string textLine;
+	std::string textBlock;
+
+	// TODO: проверка на строку содержащую только символы табуляции и пробелы
+	std::getline(fileStream, textLine);
+	if (textLine.empty()) {
+		return textLine;
+	}
+
+	if (textLine.find("/**") != std::string::npos) {
+		while (!fileStream.eof()) {
+			if (textLine.find("*/") != std::string::npos) {
+				textBlock += textLine;
+				break;
+			}
+			textBlock += textLine + "\n";
+			std::getline(fileStream, textLine);
+		}
+
+		return textBlock;
+	}
+
+	while (!fileStream.eof()) {
+		boost::replace_first(textLine, "\t", "");
+		if (textLine.find(';') != std::string::npos) {
+			textBlock += textLine;
+			break;
+		}
+		textBlock += textLine + "\n";
+		std::getline(fileStream, textLine);
+	}
+
+	return textBlock;
 }
 
 } // galaxycmt
