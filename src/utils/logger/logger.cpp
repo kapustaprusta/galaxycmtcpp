@@ -39,8 +39,7 @@ Logger* Logger::GetInstance() {
 	return logger_;
 }
 
-void Logger::AddSink(const LoggerSinkType& sinkType,
-					 const std::string& pathToFile) {
+void Logger::AddSink(const LoggerSinkType& sinkType, const std::string& pathToFile) {
 	switch (sinkType) {
 		case LoggerSinkType::FILE:
 			AddFileSink(pathToFile);
@@ -53,8 +52,7 @@ void Logger::AddSink(const LoggerSinkType& sinkType,
 	}
 }
 
-void Logger::AddMessage(const std::string& message,
-                        const SeverityLevel& level)
+void Logger::AddMessage(const std::string& message, const SeverityLevel& level)
 {
 	switch (level)
 	{
@@ -87,8 +85,7 @@ void Logger::AddFileSink(const std::string& pathToFile) {
 }
 
 void Logger::AddConsoleSink() {
-	auto logStream = boost::shared_ptr<std::ostream>(&std::clog,
-												     boost::null_deleter());
+	auto logStream = boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter());
 	auto logSink = boost::make_shared<text_sink>();
 	logSink->locked_backend()->add_stream(logStream);
 	logging::core::get()->add_sink(logSink);

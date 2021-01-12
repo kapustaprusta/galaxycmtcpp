@@ -8,20 +8,19 @@ namespace galaxycmt {
 
 class IWalker;
 
-enum class NodeType {
+enum class FSNodeType {
 	UNKNOWN   = 0,
 	FILE      = 1,
 	DIRECTORY = 2
 };
 
 struct Node {
-	Node(const NodeType& type = NodeType::UNKNOWN,
-	     const std::string& path = "")
+	Node(const FSNodeType& type = FSNodeType::UNKNOWN, const std::string& path = "")
 		: type_(type)
 		, path_(path){}
 	~Node() = default;
 
-	NodeType type_;
+	FSNodeType type_;
 	std::string path_;
 };
 

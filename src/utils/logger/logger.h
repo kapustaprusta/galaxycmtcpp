@@ -45,11 +45,8 @@ public:
 
 	static Logger* GetInstance();
 
-	void AddSink(const LoggerSinkType& sinkType,
-			     const std::string& pathToFile = "");
-
-	void AddMessage(const std::string& message,
-	                const SeverityLevel& level = SeverityLevel::INFO);
+	void AddSink(const LoggerSinkType& sinkType, const std::string& pathToFile = "");
+	void AddMessage(const std::string& message, const SeverityLevel& level = SeverityLevel::INFO);
 
 private:
 	friend LoggerDestroyer;

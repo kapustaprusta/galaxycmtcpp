@@ -14,9 +14,7 @@ struct WalkerConfig {
 			     const std::string& pathToRootDir = "./")
 		: isRecursive_(isRecursive) {
 		for (const auto& skippedPath : skippedPaths) {
-			// convert relative path to absolute
-			skippedPaths_.insert(boost::filesystem::absolute(skippedPath,
-													         pathToRootDir).string());
+			skippedPaths_.insert(boost::filesystem::absolute(skippedPath, pathToRootDir).string());
 		}
 	}
 

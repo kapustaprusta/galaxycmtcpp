@@ -41,8 +41,7 @@ size_t DirWalker::GetVisitedLength() {
 
 std::list<std::string> DirWalker::GetVisited() {
 	std::lock_guard lockGuard(visitedFilesMutex_);
-	auto tmpVisitedFiles = std::list<std::string>{visitedFiles_.begin(),
-												  visitedFiles_.end()};
+	auto tmpVisitedFiles = std::list<std::string>{visitedFiles_.begin(), visitedFiles_.end()};
 	visitedFiles_.clear();
 
 	return tmpVisitedFiles;
